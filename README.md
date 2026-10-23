@@ -149,14 +149,3 @@ Keel has an internal deterministic agreement commitment helper and Base Sepolia 
 
 Keel's agreed share applies to play fees and activated deposit fees only; exit fees are 100% the company's. Deposit, stake and profit results include `keel_fee_share`; exit results return `"0"`. Use `keelFeeShare("play" | "deposit" | "exit", feeUnits, rateBps)` to compute the exact amount Live verifies.
 
-## Publishing (maintainers)
-
-```bash
-cd sdk/keel
-npm install
-npm test
-npm login                 # account that owns the @keelprotect npm organization
-npm publish               # builds dist/ automatically, publishes publicly
-```
-
-To share privately before publishing, run `npm pack` and send the generated `.tgz`; install it with `npm install ./keelprotect-sdk-0.1.0.tgz`.
