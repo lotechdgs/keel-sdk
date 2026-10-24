@@ -145,6 +145,8 @@ Keel has an internal deterministic agreement commitment helper and Base Sepolia 
 
 `status()` now optionally includes `state`, `missing`, `checkedAt` and `bindingVersion`, without requiring manual activation. Keel stores immutable connection drafts and can internally commit prepared receipt evidence, replay protection and a queued notification atomically. These receipt-only results do not apply balances or paid billing. No partner command-preparation/confirmation method is enabled yet. Sandbox SDK amount conversion remains six decimals; do not reuse it for future Live assets with other precision.
 
+**Solana:** `contracts/keel_integration_v1.rs` defines the equivalent interface. Your program must own one 171-byte config account at PDA seeds `["keel-config"]` declaring version 1, company ID hash, asset mint, treasury, Keel's fee recipient wallet, agreement ID and Keel's fee share (basis points). Keel reads it on Solana mainnet and devnet and compares it with your signed terms. The same settlement rules apply: Keel's share is sent automatically to the fee recipient's token account only on won/lost settlement; void transfers neither share.
+
 ## Keel fee share
 
 Keel's agreed share applies to play fees and activated deposit fees only; exit fees are 100% the company's. Deposit, stake and profit results include `keel_fee_share`; exit results return `"0"`. Use `keelFeeShare("play" | "deposit" | "exit", feeUnits, rateBps)` to compute the exact amount Live verifies. The **entire play fee**, including client and Keel shares, remains pending at placement. Only won/lost settlement earns it; void/refund discards it without transfers to either collection address.
