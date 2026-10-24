@@ -147,5 +147,8 @@ Keel has an internal deterministic agreement commitment helper and Base Sepolia 
 
 ## Keel fee share
 
-Keel's agreed share applies to play fees and activated deposit fees only; exit fees are 100% the company's. Deposit, stake and profit results include `keel_fee_share`; exit results return `"0"`. Use `keelFeeShare("play" | "deposit" | "exit", feeUnits, rateBps)` to compute the exact amount Live verifies.
+Keel's agreed share applies to play fees and activated deposit fees only; exit fees are 100% the company's. Deposit, stake and profit results include `keel_fee_share`; exit results return `"0"`. Use `keelFeeShare("play" | "deposit" | "exit", feeUnits, rateBps)` to compute the exact amount Live verifies. The **entire play fee**, including client and Keel shares, remains pending at placement. Only won/lost settlement earns it; void/refund discards it without transfers to either collection address.
 
+For supported Web3 Live, **automatic remittance is mandatory**: the authorized settlement transaction must split the earned fee and send Keel's exact agreed share to its approved designated address. Optional manual transfers or an independently emitted fee event are not a compliant integration. `KeelFeeCollected` must share its operation ID and transaction with the authorized `KeelSettlementConfirmed` result (0 = lost, 1 = won); the internal verifier checks that settlement against the saved server expectation, and durable validation prevents a second fee for the same user/stake. Received underpayments remain incomplete with the exact shortfall; they never count as full payment.
+
+These checks do **not** implement automatic fund transfers. The SDK forwards API calls and the Solidity file is only an interface; Live money remains disabled until company-owned settlement routing and the funded adapter are independently verified. Web2 keeps settlement-only earnings with verified periodic invoicing, not automatic bank debits.
